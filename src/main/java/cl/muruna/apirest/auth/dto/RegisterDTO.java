@@ -1,7 +1,8 @@
-package cl.muruna.apirest.users.dto;
+package cl.muruna.apirest.auth.dto;
 
 import cl.muruna.apirest.phones.dto.CreatePhoneDTO;
 import cl.muruna.apirest.users.entities.UserEntity;
+import cl.muruna.apirest.users.enums.Role;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -9,15 +10,13 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Builder
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class CreateUserDTO {
+public class RegisterDTO {
     @NotNull(message = "El nombre no puede ser nulo")
     private String name;
     @Email(message = "Email no válido")
@@ -34,11 +33,14 @@ public class CreateUserDTO {
     @NotNull(message = "Los teléfonos no pueden ser nulos")
     private List<CreatePhoneDTO> phones;
 
+
     public UserEntity toUserEntity () {
         return UserEntity.builder()
                 .email(this.getEmail())
                 .password(this.getPassword())
                 .name(this.getName())
+                .role(Role.USER)
                 .build();
     }
+
 }
